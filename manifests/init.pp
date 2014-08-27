@@ -105,6 +105,16 @@ class php (
   $real_settings = hiera_hash('php::settings', $settings)
 
   $real_extensions = hiera_hash('php::extensions', $extensions)
+
+  if $::osfamily == 'Gentoo' {
+    # add the extensions which are in fact USE flags to a package.use definition
+    package_use { $php::params::cli_package:
+      use    => intersection(keys($real_extensions), $php::params::php_flags),
+      slot   => $php::params::php_slot,
+      target => "php-${php::params::php_slot}",
+      ensure => present
+    }
+  }
   create_resources('php::extension', $real_extensions, {
     ensure  => $ensure,
     require => Class['php::cli'],
