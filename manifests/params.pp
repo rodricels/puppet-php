@@ -86,6 +86,7 @@ class php::params {
       $manage_repos        = false
     }
     'Gentoo': {
+      $package             = "dev-lang/php"
       $php_slot            = '5.5'
       $php_flags           = [
         'bcmath', 'berkdb', 'bzip2', 'calendar', 'cdb', 'cjk', 'crypt',
@@ -100,21 +101,21 @@ class php::params {
         'truetype', 'unicode', 'wddx', 'xml', 'xmlreader', 'xmlwriter',
         'xmlrpc', 'xpm', 'xslt', 'zip', 'zlib'
       ]
+      $common_packages     = []
       $config_root_ini     = '/etc/php'
-      $apache_inifile      = "${config_root_ini}/apache2-php${php_slot}/php.ini"
-      $apache_package      = "dev-lang/php"
-      $apache_service_name = 'apache2'
       $cli_inifile         = "${config_root_ini}/cli-php${php_slot}/php.ini"
-      $cli_package         = $apache_package
+      $cli_package         = $package
       $fpm_config_file     = "${config_root_ini}/fpm-php${php_slot}/php-fpm.conf"
       $fpm_inifile         = "${config_root_ini}/fpm-php${php_slot}/php.ini"
-      $fpm_package         = $apache_package
+      $fpm_package         = $package
       $fpm_pool_dir        = '/etc/php-fpm.d'
       $fpm_service_name    = 'php-fpm'
       $fpm_user            = 'www'
       $fpm_group           = 'www'
       $package_prefix      = 'dev-php/pecl-'
       $pear_package        = 'dev-php/pear'
+      $compiler_packages   = []
+      $manage_repos        = false
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only supports osfamily Debian, RedHat, Suse and Gentoo.\n
