@@ -1,0 +1,9 @@
+HOSTS:
+  gentoo:
+    roles:
+      - master
+    platform: gentoo-none-x86_64
+    box:  d11wtq/gentoo
+    hypervisor: vagrant
+CONFIG:
+  type: foss

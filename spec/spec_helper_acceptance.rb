@@ -24,6 +24,11 @@ RSpec.configure do |c|
           on host, 'zypper in -y --force-resolution puppet'
         end
       end
+      on host, 'test -x /usr/bin/emerge', :acceptable_exit_codes => [0,1] do |result|
+        if result.exit_code == 0
+          on host, 'emerge puppet'
+        end
+      end
     end
 
     # Install module
@@ -33,6 +38,7 @@ RSpec.configure do |c|
       on host, puppet('module', 'install', '-f', 'puppetlabs-apt')
       on host, puppet('module', 'install', '-f', 'puppetlabs-inifile')
       on host, puppet('module', 'install', '-f', 'darin-zypprepo')
+      on host, puppet('module', 'install', '-f', 'gentoo-portage')
     end
   end
 end
