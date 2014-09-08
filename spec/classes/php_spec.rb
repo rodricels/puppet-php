@@ -42,6 +42,42 @@ describe 'php', :type => :class do
     }
   end
 
+  describe 'when called with no parameters on RedHat' do
+    let(:facts) { { :osfamily => 'RedHat',
+                    :path     => '/usr/local/bin:/usr/bin:/bin' } }
+    it {
+      should contain_package('php').with({
+        'ensure' => 'latest',
+      })
+      should contain_package('php-cli').with({
+        'ensure' => 'latest',
+      })
+      should contain_package('php-devel').with({
+        'ensure' => 'latest',
+      })
+      should contain_package('php-pear').with({
+        'ensure' => 'latest',
+      })
+      should_not contain_package('php5-dev')
+      should_not contain_package('php5-pear')
+    }
+  end
+
+  describe 'when called with no parameters on Gentoo' do
+    let(:facts) { { :osfamily => 'Gentoo',
+                    :path     => '/usr/local/bin:/usr/bin:/bin' } }
+    it {
+      should contain_package('dev-lang/php').with({
+        'ensure' => 'latest',
+      })
+      should_not contain_package('php-cli')
+      should_not contain_package('php-devel')
+      should_not contain_package('php-pear')
+      should_not contain_package('php5-dev')
+      should_not contain_package('php5-pear')
+    }
+  end
+
   describe 'when fpm is disabled' do
     let(:params) { { :fpm => false, } }
     it {
