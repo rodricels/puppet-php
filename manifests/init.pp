@@ -109,17 +109,25 @@ class php (
   if $::osfamily == 'Gentoo' {
     # add the extensions which are in fact USE flags to a package.use definition
     # plus the apache and fpm settings turned into USE flags
-    $flags = concat(
-      intersection(keys($real_extensions), $php::params::php_flags),
-      delete_undef_values([
-        $apache ? { true => 'apache2', default => undef },
-        $fpm    ? { true => 'fpm',     default => undef } ])
-    )
+    $extension_flags = intersection(keys($real_extensions), $php::params::php_flags)
+
+    if $fpm {
+        $flags = concat(['fpm'], $extension_flags)
+
+        package_use { 'app-admin/eselect-php':
+            ensure => present,
+            use    => ['fpm'],
+            target => 'php',
+            before => Package_use[$php::params::cli_package]
+        }
+    } else {
+        $flags = $extension_flags
+    }
     package_use { $php::params::cli_package:
+      ensure => present,
       use    => $flags,
       slot   => $php::params::php_slot,
       target => "php-${php::params::php_slot}",
-      ensure => present
     }
   }
   create_resources('php::extension', $real_extensions, {

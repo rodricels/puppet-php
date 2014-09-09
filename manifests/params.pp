@@ -102,6 +102,7 @@ class php::params {
         'xmlrpc', 'xpm', 'xslt', 'zip', 'zlib'
       ]
       $common_packages     = []
+      $dev_package         = $package
       $config_root_ini     = '/etc/php'
       $cli_inifile         = "${config_root_ini}/cli-php${php_slot}/php.ini"
       $cli_package         = $package

@@ -35,8 +35,11 @@ class php::dev(
   validate_string($ensure)
   validate_string($package)
 
-  package { $package:
-    ensure  => $ensure,
-    require => Class['php::packages'],
+  # for some OS the dev and cli package is the same
+  if $package != $php::params::cli_package {
+    package { $package:
+      ensure  => $ensure,
+      require => Class['php::packages'],
+    }
   }
 }

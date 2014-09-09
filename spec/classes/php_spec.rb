@@ -67,8 +67,13 @@ describe 'php', :type => :class do
     let(:facts) { { :osfamily => 'Gentoo',
                     :path     => '/usr/local/bin:/usr/bin:/bin' } }
     it {
-      should contain_package('dev-lang/php').with({
-        'ensure' => 'latest',
+      should contain_package_use('app-admin/eselect-php').with({
+        'ensure' => 'present',
+        'use'    => ['fpm']
+      })
+      should contain_package_use('dev-lang/php').with({
+        'ensure' => 'present',
+        'use'    => ['fpm']
       })
       should_not contain_package('php-cli')
       should_not contain_package('php-devel')
